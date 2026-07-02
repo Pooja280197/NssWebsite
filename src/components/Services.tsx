@@ -1,32 +1,152 @@
-import { Code2, Globe, BarChart3, GitBranch, Users, Smartphone, UserPlus, Headphones, Cloud, Brain, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 const services = [
-  { num: '01', icon: Code2, title: 'Custom Software Development', desc: 'Productivity showcases and clever solutions that integrate and automate your core business operations seamlessly.', accent: 'blue' as const, href: 'https://www.nagarsoftwaresolution.com/custom-software-development-services' },
-  { num: '02', icon: Globe, title: 'Web Development & Design', desc: 'Our team of web wizards builds impactful, functional websites tailored to your vision and business objectives.', accent: 'orange' as const, href: 'https://www.nagarsoftwaresolution.com/web-development-and-design-services' },
-  { num: '03', icon: BarChart3, title: 'Data Science & Analytics', desc: 'Our data scientists unlock innovation, insights, and growth for your business through advanced analytics.', accent: 'blue' as const, href: 'https://www.nagarsoftwaresolution.com/data-science-consulting-services' },
-  { num: '04', icon: GitBranch, title: 'DevOps Development', desc: 'Streamline development, testing, and deployment, accelerating time-to-market with modern DevOps pipelines.', accent: 'orange' as const, href: 'https://www.nagarsoftwaresolution.com/devops-development-services' },
-  { num: '05', icon: Users, title: 'CRM / Salesforce', desc: "Salesforce is the world's leading CRM platform. We help all sizes of companies streamline sales operations.", accent: 'blue' as const, href: 'https://www.nagarsoftwaresolution.com/crm-software-development-software' },
-  { num: '06', icon: Smartphone, title: 'Enterprise Mobility', desc: 'Stay agile and connected. We power your workforce with secure, cutting-edge Enterprise Mobility solutions.', accent: 'orange' as const, href: 'https://www.nagarsoftwaresolution.com/enterprise-mobility-services' },
-  { num: '07', icon: UserPlus, title: 'Staff Augmentation', desc: 'NSS Staff Augmentation connects you with skilled professionals to power your business growth immediately.', accent: 'blue' as const, href: 'https://www.nagarsoftwaresolution.com/staff-augmentation-services' },
-  { num: '08', icon: Headphones, title: 'ServiceNow', desc: 'Businesses need efficient service delivery. NSS offers comprehensive ServiceNow solutions for enterprises.', accent: 'orange' as const, href: 'https://www.nagarsoftwaresolution.com/service-now' },
-  { num: '09', icon: Cloud, title: 'Cloud Solutions', desc: 'We design, implement & manage secure, scalable cloud solutions that boost productivity & cost-efficiency.', accent: 'blue' as const, href: 'https://www.nagarsoftwaresolution.com/cloud-solutions-services' },
-  { num: '10', icon: Brain, title: 'AI & Machine Learning', desc: 'Leverage AI & ML to automate operations, uncover insights, and unlock smarter business outcomes at scale.', accent: 'orange' as const, href: 'https://www.nagarsoftwaresolution.com/' },
+  {
+    title: 'Custom Software Development',
+    desc: 'Automate and integrate your core business operations.',
+    href: 'https://www.nagarsoftwaresolution.com/custom-software-development-services',
+    image: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Web Development & Design',
+    desc: 'Impactful websites built around your vision.',
+    href: 'https://www.nagarsoftwaresolution.com/web-development-and-design-services',
+    image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Data Science & Analytics',
+    desc: 'Unlock innovation and growth with analytics.',
+    href: 'https://www.nagarsoftwaresolution.com/data-science-consulting-services',
+    image: 'https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'DevOps Development',
+    desc: 'Accelerate delivery from code to production.',
+    href: 'https://www.nagarsoftwaresolution.com/devops-development-services',
+    image: 'https://images.pexels.com/photos/1181673/pexels-photo-1181673.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'CRM / Salesforce',
+    desc: 'Streamline sales and customer engagement.',
+    href: 'https://www.nagarsoftwaresolution.com/crm-software-development-software',
+    image: 'https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Enterprise Mobility',
+    desc: 'Keep your workforce secure and connected.',
+    href: 'https://www.nagarsoftwaresolution.com/enterprise-mobility-services',
+    image: 'https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Staff Augmentation',
+    desc: 'Skilled experts to power your growth.',
+    href: 'https://www.nagarsoftwaresolution.com/staff-augmentation-services',
+    image: 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'ServiceNow',
+    desc: 'Efficient enterprise service delivery at scale.',
+    href: 'https://www.nagarsoftwaresolution.com/service-now',
+    image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'Cloud Solutions',
+    desc: 'Secure, scalable cloud for modern teams.',
+    href: 'https://www.nagarsoftwaresolution.com/cloud-solutions-services',
+    image: 'https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
+  {
+    title: 'AI & Machine Learning',
+    desc: 'Smarter outcomes with AI and ML.',
+    href: 'https://www.nagarsoftwaresolution.com/',
+    image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800',
+  },
 ];
 
 export default function Services() {
-  const { ref, isVisible } = useIntersectionObserver(0.04);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef({ active: false, startX: 0, scrollLeft: 0 });
+  const { ref: sectionRef, isVisible } = useIntersectionObserver(0.08);
+
+  const updateCardPerspective = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const trackRect = track.getBoundingClientRect();
+    const centerX = trackRect.left + trackRect.width / 2;
+
+    track.querySelectorAll<HTMLElement>('.services-gallery-card').forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const offset = (cardCenter - centerX) / (trackRect.width * 0.5);
+      const clamped = Math.max(-1, Math.min(1, offset));
+      const rotateY = clamped * -18;
+      const scale = 1 - Math.abs(clamped) * 0.06;
+      const translateZ = (1 - Math.abs(clamped)) * 12;
+
+      card.style.transform = `perspective(1200px) rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
+    });
+  }, []);
+
+  const endDrag = () => {
+    dragRef.current.active = false;
+    trackRef.current?.classList.remove('is-dragging');
+  };
+
+  const onTrackMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = trackRef.current;
+    if (!el) return;
+    dragRef.current = { active: true, startX: e.clientX, scrollLeft: el.scrollLeft };
+    el.classList.add('is-dragging');
+  };
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!dragRef.current.active) return;
+      const el = trackRef.current;
+      if (!el) return;
+      const dx = e.clientX - dragRef.current.startX;
+      el.scrollLeft = dragRef.current.scrollLeft - dx;
+    };
+    const onUp = () => endDrag();
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    updateCardPerspective();
+    track.addEventListener('scroll', updateCardPerspective);
+    window.addEventListener('resize', updateCardPerspective);
+
+    const blockWheel = (e: WheelEvent) => e.preventDefault();
+    track.addEventListener('wheel', blockWheel, { passive: false });
+
+    return () => {
+      track.removeEventListener('scroll', updateCardPerspective);
+      window.removeEventListener('resize', updateCardPerspective);
+      track.removeEventListener('wheel', blockWheel);
+    };
+  }, [updateCardPerspective]);
 
   return (
     <section id="services" className="py-28 bg-slate-50 relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+      <div
+        className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(41,171,226,0.04) 0%, transparent 70%)', transform: 'translate(30%, -30%)' }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
+      <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className={`text-center mb-16 reveal ${isVisible ? 'visible' : ''}`}>
           <span className="section-tag">What We Do</span>
           <h2 className="text-4xl lg:text-5xl font-black text-navy-800 mt-4 mb-5">
             Our <span className="gradient-text">Services</span>
@@ -36,49 +156,38 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Grid */}
-        <div
-          ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-        >
-          {services.map((s, i) => (
-            <a
-              key={s.title}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`service-card service-card-premium reveal group ${isVisible ? 'visible' : ''} ${s.accent === 'blue' ? 'service-card-blue' : 'service-card-orange'}`}
-              style={{ transitionDelay: `${i * 55}ms` }}
-            >
-              <div className="flex items-start justify-between mb-5">
-                <span
-                  className={`text-[11px] font-black tabular-nums tracking-wider ${s.accent === 'blue' ? 'text-sky-400/70' : 'text-orange-400/70'}`}
-                >
-                  {s.num}
-                </span>
-                <div className={`brand-icon w-11 h-11 rounded-xl ${s.accent === 'blue' ? 'brand-icon-blue' : 'brand-icon-orange'}`}>
-                  <s.icon size={20} />
-                </div>
-              </div>
-
-              <h3 className="font-black text-navy-800 text-[15px] leading-snug mb-3 transition-colors duration-200 group-hover:text-slate-900">
-                {s.title}
-              </h3>
-
-              <p className="text-slate-500 text-sm leading-relaxed mb-5 line-clamp-3">{s.desc}</p>
-
-              <div
-                className={`inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-200 group-hover:gap-2.5 ${s.accent === 'blue' ? 'gradient-text-blue' : 'gradient-text'}`}
+        <div className="services-gallery-stage">
+          <div
+            ref={trackRef}
+            className="services-gallery-track"
+            onMouseDown={onTrackMouseDown}
+            onMouseUp={endDrag}
+            onMouseLeave={endDrag}
+          >
+            {services.map((s, i) => (
+              <a
+                key={s.title}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`services-gallery-card reveal ${isVisible ? 'visible' : ''}`}
+                style={{ transitionDelay: `${i * 60}ms` }}
               >
-                Learn More
-                <div
-                  className={`w-5 h-5 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${s.accent === 'blue' ? 'bg-sky-500/10' : 'bg-orange-500/10'}`}
-                >
-                  <ArrowUpRight size={11} className={s.accent === 'blue' ? 'text-blue-600' : 'text-orange-600'} />
+                <div className="services-gallery-card-media">
+                  <img src={s.image} alt={s.title} loading="lazy" draggable={false} />
                 </div>
-              </div>
-            </a>
-          ))}
+                <div className="services-gallery-card-body">
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.desc}</p>
+                  </div>
+                  <span className="services-gallery-card-link">
+                    Explore <ArrowUpRight size={14} className="services-gallery-card-link-icon" />
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
