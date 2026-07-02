@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, BarChart3, Database, TrendingUp, Search, PieChart, Activity } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, Database, TrendingUp, Search, Activity } from 'lucide-react';
 import { useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
@@ -33,10 +33,10 @@ const lifecycleSteps = [
 ];
 
 const strategyItems = [
-  { icon: Database, color: '#3b82f6', title: 'Descriptive Analysis', desc: 'Statistical interpretation used to investigate historical data to recognize patterns and relationships like "What has happened?"' },
-  { icon: Search, color: '#f97316', title: 'Diagnostic Analysis', desc: 'Statistical analysis used to answer the question "Why did it happen?" It features techniques such as drill-down, data discovery, data mining and correlations.' },
-  { icon: TrendingUp, color: '#3b82f6', title: 'Predictive Analysis', desc: 'Using data to forecast future outcomes using AI and ML. Statistical models to find patterns, and predicting future behaviour like "What will happen?"' },
-  { icon: Activity, color: '#f97316', title: 'Prescriptive Analysis', desc: 'Analyzing the optimal course of action and best practices for better outcomes in the project like "What should we do to make it happen?"' },
+  { icon: Database, accent: 'blue' as const, title: 'Descriptive Analysis', desc: 'Statistical interpretation used to investigate historical data to recognize patterns and relationships like "What has happened?"' },
+  { icon: Search, accent: 'orange' as const, title: 'Diagnostic Analysis', desc: 'Statistical analysis used to answer the question "Why did it happen?" It features techniques such as drill-down, data discovery, data mining and correlations.' },
+  { icon: TrendingUp, accent: 'blue' as const, title: 'Predictive Analysis', desc: 'Using data to forecast future outcomes using AI and ML. Statistical models to find patterns, and predicting future behaviour like "What will happen?"' },
+  { icon: Activity, accent: 'orange' as const, title: 'Prescriptive Analysis', desc: 'Analyzing the optimal course of action and best practices for better outcomes in the project like "What should we do to make it happen?"' },
 ];
 
 const faqs = [
@@ -49,6 +49,8 @@ interface Props { onClose: () => void; }
 
 export default function DataSciencePage({ onClose }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { ref: introRef, isVisible: introVisible } = useIntersectionObserver(0.12);
+  const { ref: engRef, isVisible: engVisible } = useIntersectionObserver(0.12);
   const { ref, isVisible } = useIntersectionObserver(0.05);
   const { ref: stratRef, isVisible: stratVisible } = useIntersectionObserver(0.05);
   const { ref: faqRef, isVisible: faqVisible } = useIntersectionObserver(0.1);
@@ -83,8 +85,8 @@ export default function DataSciencePage({ onClose }: Props) {
       {/* Intro */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            <div className="reveal-left">
+          <div ref={introRef} className="grid lg:grid-cols-2 gap-14 items-center">
+            <div className={`reveal-left ${introVisible ? 'visible' : ''}`}>
               <span className="section-tag">What We Do</span>
               <h2 className="text-3xl lg:text-4xl font-black text-navy-800 mt-5 mb-5 leading-snug">
                 Powering <span className="gradient-text">Data Analytics!</span>
@@ -92,25 +94,29 @@ export default function DataSciencePage({ onClose }: Props) {
               <ul className="space-y-3 mb-8">
                 {dataScienceFeatures.map((f, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5" style={{ color: i % 2 === 0 ? '#3b82f6' : '#f97316' }} />
+                    <CheckCircle2 size={16} className={`flex-shrink-0 mt-0.5 ${i % 2 === 0 ? 'text-sky-500' : 'text-orange-500'}`} />
                     <span className="text-slate-600 text-sm leading-relaxed">{f}</span>
                   </li>
                 ))}
               </ul>
               <button
                 onClick={() => { onClose(); setTimeout(() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}
-                className="btn-primary"
+                className="btn-blue"
               >
                 Get a Free Consultation <ArrowRight size={16} />
               </button>
             </div>
-            <div className="reveal-right">
-              <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=700"
-                  alt="Data Analytics"
-                  className="w-full h-[420px] object-cover"
-                />
+            <div className={`reveal-right ${introVisible ? 'visible' : ''}`} style={{ transitionDelay: '120ms' }}>
+              <div className="showcase-image-card h-full">
+                <div className="showcase-image-inner h-full">
+                  <img
+                    src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=700"
+                    alt="Data Analytics"
+                    className="h-full min-h-[420px]"
+                  />
+                  <div className="showcase-image-shine" aria-hidden="true" />
+                </div>
+                <div className="showcase-floating-badge bg-gradient-brand-blue">Data Insights</div>
               </div>
             </div>
           </div>
@@ -120,58 +126,81 @@ export default function DataSciencePage({ onClose }: Props) {
       {/* Data Engineering */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            <div className="reveal-left">
-              <div className="rounded-3xl overflow-hidden shadow-xl">
-                <img
-                  src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=700"
-                  alt="Data Engineering"
-                  className="w-full h-[380px] object-cover"
-                />
+          <div ref={engRef} className="grid lg:grid-cols-2 gap-14 items-center">
+            <div className={`reveal-left ${engVisible ? 'visible' : ''}`}>
+              <div className="showcase-image-card h-full">
+                <div className="showcase-image-inner h-full">
+                  <img
+                    src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=700"
+                    alt="Data Engineering"
+                    className="h-full min-h-[420px]"
+                  />
+                  <div className="showcase-image-shine" aria-hidden="true" />
+                </div>
+                <div className="showcase-floating-badge bg-gradient-brand-orange">Cloud Infrastructure</div>
               </div>
             </div>
-            <div className="reveal-right">
+            <div className={`reveal-right ${engVisible ? 'visible' : ''}`} style={{ transitionDelay: '120ms' }}>
               <span className="section-tag">Infrastructure</span>
               <h2 className="text-3xl lg:text-4xl font-black text-navy-800 mt-5 mb-5 leading-snug">
                 Comprehending <span className="gradient-text">Data Engineering!</span>
               </h2>
-              <ul className="space-y-3">
+              <ul className="space-y-3 mb-8">
                 {dataEngFeatures.map((f, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5" style={{ color: i % 2 === 0 ? '#3b82f6' : '#f97316' }} />
+                    <CheckCircle2 size={16} className={`flex-shrink-0 mt-0.5 ${i % 2 === 0 ? 'text-sky-500' : 'text-orange-500'}`} />
                     <span className="text-slate-600 text-sm leading-relaxed">{f}</span>
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={() => { onClose(); setTimeout(() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}
+                className="btn-blue"
+              >
+                Get a Free Consultation <ArrowRight size={16} />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Data Lifecycle */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div
+          className="absolute top-0 right-0 w-[480px] h-[480px] rounded-full pointer-events-none opacity-50"
+          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.05) 0%, transparent 70%)', transform: 'translate(25%, -25%)' }}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-14">
             <span className="section-tag">Process</span>
-            <h2 className="text-3xl lg:text-4xl font-black text-navy-800 mt-4">
-              Knowing Data Science <span className="gradient-text">Lifecycle!</span>
+            <h2 className="text-3xl lg:text-[2.75rem] font-black text-navy-800 mt-4 leading-tight">
+              Knowing{' '}
+              <span className="gradient-text-blue">Data Science</span>{' '}
+              <span className="gradient-text">Lifecycle</span>
             </h2>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+              A proven 10-step journey — from business understanding to continuous monitoring and deployment.
+            </p>
+            <div className="lifecycle-title-line mx-auto mt-6" aria-hidden="true" />
           </div>
-          <div ref={ref} className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-            {lifecycleSteps.map((step, i) => (
-              <div
-                key={step.num}
-                className={`reveal flex flex-col items-center text-center p-5 rounded-2xl border hover:-translate-y-1 transition-all duration-300 cursor-default ${isVisible ? 'visible' : ''}`}
-                style={{
-                  transitionDelay: `${i * 60}ms`,
-                  borderColor: i % 2 === 0 ? 'rgba(41,171,226,0.2)' : 'rgba(247,148,29,0.2)',
-                  background: i % 2 === 0 ? 'rgba(41,171,226,0.04)' : 'rgba(247,148,29,0.04)',
-                }}
-              >
-                <span className="text-2xl font-black mb-1" style={{ color: i % 2 === 0 ? '#3b82f6' : '#f97316' }}>{step.num}</span>
-                <span className="text-xs font-bold text-slate-600 leading-tight">{step.label}</span>
-              </div>
-            ))}
+
+          <div ref={ref} className="lifecycle-grid">
+            {lifecycleSteps.map((step, i) => {
+              const enterClass = i === 0 ? 'reveal-left' : i === 1 ? 'reveal-right' : 'reveal';
+              return (
+                <div
+                  key={step.num}
+                  className={`${enterClass} lifecycle-step gradient-border group ${isVisible ? 'visible' : ''}`}
+                  style={{
+                    transitionDelay: i < 2 ? `${i * 100}ms` : `${i * 70}ms`,
+                    animationDelay: i >= 2 ? `${i * 70}ms` : undefined,
+                  }}
+                >
+                  <span className="lifecycle-step-num">{step.num}</span>
+                  <span className="lifecycle-step-label">{step.label}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -199,19 +228,22 @@ export default function DataSciencePage({ onClose }: Props) {
                   'Provision for scholarship, fee waivers and optional fees',
                 ].map((item, i) => (
                   <div key={item} className="flex items-start gap-3">
-                    <CheckCircle2 size={14} className="flex-shrink-0 mt-0.5" style={{ color: i < 3 ? '#3b82f6' : '#f97316' }} />
+                    <CheckCircle2 size={14} className={`flex-shrink-0 mt-0.5 ${i < 3 ? 'text-sky-400' : 'text-orange-400'}`} />
                     <span className="text-slate-300 text-sm">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div className="reveal-right">
-              <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=700"
-                  alt="Big Data"
-                  className="w-full h-[380px] object-cover"
-                />
+              <div className="showcase-image-card">
+                <div className="showcase-image-inner">
+                  <img
+                    src="https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=700"
+                    alt="Big Data"
+                  />
+                  <div className="showcase-image-shine" aria-hidden="true" />
+                </div>
+                <div className="showcase-floating-badge bg-gradient-brand-orange">Big Data Ready</div>
               </div>
             </div>
           </div>
@@ -231,13 +263,11 @@ export default function DataSciencePage({ onClose }: Props) {
             {strategyItems.map((s, i) => (
               <div
                 key={s.title}
-                className={`reveal service-card gradient-border flex items-start gap-5 ${stratVisible ? 'visible' : ''}`}
+                className={`reveal service-card gradient-border flex items-start gap-5 group ${stratVisible ? 'visible' : ''}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md"
-                  style={{ background: `linear-gradient(135deg, ${s.color}, ${s.color}BB)` }}
-                >
-                  <s.icon size={20} className="text-white" />
+                <div className={`brand-icon flex-shrink-0 ${s.accent === 'blue' ? 'brand-icon-blue' : 'brand-icon-orange'}`}>
+                  <s.icon size={20} />
                 </div>
                 <div>
                   <h3 className="font-black text-navy-800 text-base mb-2">{s.title}</h3>
@@ -262,15 +292,15 @@ export default function DataSciencePage({ onClose }: Props) {
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className={`reveal rounded-2xl border overflow-hidden transition-all duration-300 ${faqVisible ? 'visible' : ''} ${openFaq === i ? 'border-[#f97316] shadow-md' : 'border-slate-200'}`}
+                className={`reveal rounded-2xl border overflow-hidden transition-all duration-300 ${faqVisible ? 'visible' : ''} ${openFaq === i ? 'border-orange-400 shadow-md shadow-orange-100' : 'border-slate-200'}`}
                 style={{ transitionDelay: `${i * 80}ms` }}
               >
                 <button className="w-full text-left flex items-center justify-between px-6 py-5 gap-4" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 size={16} style={{ color: '#f97316', flexShrink: 0 }} />
+                    <CheckCircle2 size={16} className="text-orange-500 flex-shrink-0" />
                     <span className="font-bold text-navy-800 text-sm">{faq.q}</span>
                   </div>
-                  <ChevronDown size={16} className={`flex-shrink-0 text-slate-400 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-[#f97316]' : ''}`} />
+                  <ChevronDown size={16} className={`flex-shrink-0 text-slate-400 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-orange-500' : ''}`} />
                 </button>
                 {openFaq === i && <div className="px-6 pb-5"><p className="text-slate-500 text-sm leading-relaxed pl-7">{faq.a}</p></div>}
               </div>

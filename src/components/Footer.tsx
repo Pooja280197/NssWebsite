@@ -244,7 +244,7 @@ export default function Footer() {
             style={{ background: 'rgba(247,148,29,0.1)', border: '1px solid rgba(247,148,29,0.2)', color: '#f97316' }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLButtonElement;
-              el.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
+              el.style.background = 'linear-gradient(to bottom, #fbbf24, #f97316, #ea580c)';
               el.style.color = 'white';
             }}
             onMouseLeave={(e) => {

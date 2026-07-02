@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Stats from './components/Stats';
+// import Stats from './components/Stats';
 import About from './components/About';
 import Services from './components/Services';
 import Products from './components/Products';
@@ -75,7 +75,7 @@ export default function App() {
       default: return (
         <>
           <Hero />
-          <Stats />
+          {/* <Stats /> */}
           <About />
           <Services />
           <Products />

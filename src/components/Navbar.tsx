@@ -259,7 +259,7 @@ export default function Navbar({ onAboutOpen, onHomeOpen, onServiceOpen }: Navba
                           onClick={e => { e.preventDefault(); handleNav('#services'); }}
                           className="inline-flex items-center gap-1.5 text-sm font-normal px-4 py-2 rounded-full transition-all duration-200 hover:gap-2.5"
                           style={{
-                            background: 'linear-gradient(to right, #fbbf24, #f97316, #ea580c)',
+                            background: 'linear-gradient(to bottom, #fbbf24, #f97316, #ea580c)',
                             color: 'white',
                             boxShadow: '0 4px 12px rgba(249,115,22,0.35)',
                           }}

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-const PHRASES = [
-  
+export const HERO_PHRASES = [
   'Data Science',
   'Cloud Solutions',
   'CRM / Salesforce',
-  ];
+  'Mobile App Development',
+] as const;
 
 const TYPE_SPEED = 48;
 const DELETE_SPEED = 22;
@@ -16,17 +16,22 @@ const START_DELAY = 800;
 export function useTypewriter() {
   const [text, setText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [phraseIndex, setPhraseIndex] = useState(0);
 
   useEffect(() => {
-    let phraseIndex = 0;
+    let phraseIdx = 0;
     let charIndex = 0;
     let deleting = false;
     let timeoutId: ReturnType<typeof setTimeout>;
 
     const step = () => {
-      const phrase = PHRASES[phraseIndex];
+      const phrase = HERO_PHRASES[phraseIdx];
 
       if (!deleting) {
+        if (charIndex === 0) {
+          setPhraseIndex(phraseIdx);
+        }
+
         charIndex += 1;
         setText(phrase.slice(0, charIndex));
         setIsDeleting(false);
@@ -48,7 +53,7 @@ export function useTypewriter() {
         if (charIndex <= 0) {
           deleting = false;
           setIsDeleting(false);
-          phraseIndex = (phraseIndex + 1) % PHRASES.length;
+          phraseIdx = (phraseIdx + 1) % HERO_PHRASES.length;
           timeoutId = setTimeout(step, HOLD_AFTER_DELETE);
           return;
         }
@@ -61,5 +66,5 @@ export function useTypewriter() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  return { text, isDeleting };
+  return { text, isDeleting, phraseIndex };
 }
